@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
+import { PuffLoader, ScaleLoader } from "react-spinners";
 
 import { Song } from "@/types";
 import usePlayer from "@/hooks/usePlayer";
@@ -22,6 +23,7 @@ const PlayerContent = ({ song, songUrl }: PlayerContentProps) => {
   const player = usePlayer();
   const [volume, setVolume] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
@@ -58,6 +60,8 @@ const PlayerContent = ({ song, songUrl }: PlayerContentProps) => {
 
   const [play, { pause, sound }] = useSound(songUrl, {
     volume: volume,
+
+    onload: () => setIsLoading(false),
     onplay: () => setIsPlaying(true),
     onend: () => {
       setIsPlaying(false);
@@ -66,6 +70,8 @@ const PlayerContent = ({ song, songUrl }: PlayerContentProps) => {
     onpause: () => setIsPlaying(false),
     format: ["mp3"],
   });
+
+  // console.log(sound.seek(12346));
 
   useEffect(() => {
     sound?.play();
@@ -95,7 +101,11 @@ const PlayerContent = ({ song, songUrl }: PlayerContentProps) => {
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
       <div className="flex w-full justify-start">
         <div className="flex items-center gap-x-4">
-          <MediaItem data={song} />
+          {isLoading ? (
+            <ScaleLoader color="#22c55e" />
+          ) : (
+            <MediaItem data={song} />
+          )}
           <LikeButton songId={song.id} />
         </div>
       </div>
@@ -110,9 +120,12 @@ const PlayerContent = ({ song, songUrl }: PlayerContentProps) => {
             items-center
           "
       >
-        <div
-          onClick={handlePlay}
-          className="
+        {isLoading ? (
+          <PuffLoader color="#22c55e" />
+        ) : (
+          <div
+            onClick={handlePlay}
+            className="
               h-10
               w-10
               flex 
@@ -123,9 +136,10 @@ const PlayerContent = ({ song, songUrl }: PlayerContentProps) => {
               p-1 
               cursor-pointer
             "
-        >
-          <Icon size={30} className="text-black" />
-        </div>
+          >
+            <Icon size={30} className="text-black" />
+          </div>
+        )}
       </div>
 
       <div
@@ -150,9 +164,12 @@ const PlayerContent = ({ song, songUrl }: PlayerContentProps) => {
               transition
             "
         />
-        <div
-          onClick={handlePlay}
-          className="
+        {isLoading ? (
+          <PuffLoader color="#22c55e" />
+        ) : (
+          <div
+            onClick={handlePlay}
+            className="
               flex 
               items-center 
               justify-center
@@ -163,18 +180,19 @@ const PlayerContent = ({ song, songUrl }: PlayerContentProps) => {
               p-1 
               cursor-pointer
             "
-        >
-          <Icon size={30} className="text-black" />
-        </div>
+          >
+            <Icon size={30} className="text-black" />
+          </div>
+        )}
         <AiFillStepForward
           onClick={onPlayNext}
           size={30}
           className="
-              text-neutral-400 
-              cursor-pointer 
-              hover:text-white 
-              transition
-            "
+        text-neutral-400 
+        cursor-pointer 
+        hover:text-white 
+        transition
+        "
         />
       </div>
 
