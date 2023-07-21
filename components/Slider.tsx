@@ -7,7 +7,7 @@ interface SlideProps {
   onChange?: (value: number) => void;
 }
 
-const Slider: React.FC<SlideProps> = ({ value = 1, onChange }) => {
+const Slider = ({ value = 1, onChange }: SlideProps) => {
   const handleChange = (newValue: number[]) => {
     onChange?.(newValue[0]);
   };

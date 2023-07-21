@@ -13,7 +13,7 @@ interface LikeButtonProps {
   songId: string;
 }
 
-const LikeButton: React.FC<LikeButtonProps> = ({ songId }) => {
+const LikeButton = ({ songId }: LikeButtonProps) => {
   const router = useRouter();
   const { supabaseClient } = useSessionContext();
   const authModal = useAuthModal();

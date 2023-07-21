@@ -12,7 +12,7 @@ interface SongItemProps {
   onClick: (id: string) => void;
 }
 
-const SongItem: React.FC<SongItemProps> = ({ data, onClick }) => {
+const SongItem = ({ data, onClick }: SongItemProps) => {
   const imagePath = useLoadImage(data);
 
   return (

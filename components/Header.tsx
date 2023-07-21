@@ -11,7 +11,7 @@ import { BiSearch } from "react-icons/bi";
 
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
-// import usePlayer from "@/hooks/usePlayer";
+import usePlayer from "@/hooks/usePlayer";
 
 import Button from "./Button";
 
@@ -20,8 +20,8 @@ interface HeaderProps {
   className?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ children, className }) => {
-  // const player = usePlayer();
+const Header = ({ children, className }: HeaderProps) => {
+  const player = usePlayer();
   const router = useRouter();
   const authModal = useAuthModal();
 
@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
 
   const handleLogout = async () => {
     const { error } = await supabaseClient.auth.signOut();
-    // player.reset();
+    player.reset();
     router.refresh();
 
     if (error) {
@@ -122,12 +122,6 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
             <div className="flex gap-x-4 items-center">
               <Button onClick={handleLogout} className="bg-white px-6 py-2">
                 Logout
-              </Button>
-              <Button
-                onClick={() => router.push("/account")}
-                className="bg-white"
-              >
-                <FaUserAlt />
               </Button>
             </div>
           ) : (
